@@ -10,7 +10,7 @@ ORDER BY apellido DESC;
 
 SELECT *
 FROM revendedor
-WHERE id IN (
+WHERE id_revendedor IN (
  SELECT DISTINCT id_revendedor
  FROM factura
 ); 
@@ -19,16 +19,19 @@ SELECT
   UPPER(producto.descripcion) AS descripcion,
   producto.precio
 FROM producto
-JOIN pedido ON producto.id = pedido.id_producto
+JOIN pedido ON producto.id_producto = pedido.id_producto
 WHERE pedido.id_revendedor = 3;
   
   
 CREATE VIEW proyecto.producto_vw AS(
-SELECT
-  categoria_producto.categoria AS categoria,
+SELECT   
+  producto.id_producto AS sku,
   producto.descripcion AS descripcion,
+  categoria_producto.categoria AS categoria,
   marca_producto.marca AS marca
 FROM  producto
-JOIN  categoria_producto ON categoria_producto.id = producto.id_categoria
-JOIN marca_producto ON marca_producto.id = producto.id_marca
-GROUP BY categoria, descripcion, marca);
+JOIN  categoria_producto ON categoria_producto.id_categoria = producto.id_categoria
+JOIN marca_producto ON marca_producto.id_marca = producto.id_marca
+GROUP BY sku, descripcion, categoria, marca);
+
+SELECT * from proyecto.producto_vw;
